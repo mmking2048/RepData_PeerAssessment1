@@ -61,6 +61,12 @@ stepsbyint <- aggregate(steps ~ interval, activity, FUN = mean);
 plot(stepsbyint, type='l', main = "Average Daily Activity Pattern");
 ```
 
+The maximum number of steps taken in a given interval:
+
+```{r echo=TRUE}
+stepsbyint[which.max(stepsbyint$steps),]
+```
+
 ## Imputing missing values
 
 Number of NA values:

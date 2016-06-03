@@ -74,6 +74,18 @@ plot(stepsbyint, type='l', main = "Average Daily Activity Pattern");
 
 ![](PA1_template_files/figure-html/unnamed-chunk-6-1.png)
 
+The maximum number of steps taken in a given interval:
+
+
+```r
+stepsbyint[which.max(stepsbyint$steps),]
+```
+
+```
+##     interval    steps
+## 104      835 206.1698
+```
+
 ## Imputing missing values
 
 Number of NA values:
@@ -113,7 +125,7 @@ A histogram of the total number of steps taken each day:
 hist(newstepsbydate$steps, main = "Total Number of Steps Taken Per Day", xlab = "Steps");
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-10-1.png)
+![](PA1_template_files/figure-html/unnamed-chunk-11-1.png)
 
 The mean total number of steps taken per day is 
 
@@ -166,7 +178,7 @@ library(lattice);
 xyplot(steps ~ interval|day, data = newstepsbyint, type = 'l', layout = c(1, 2), main = "Average Daily Activity Pattern");
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-16-1.png)
+![](PA1_template_files/figure-html/unnamed-chunk-17-1.png)
 
 ----------
 
