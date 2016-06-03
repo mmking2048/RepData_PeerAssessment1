@@ -1,9 +1,4 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 ## Introduction
 
@@ -17,7 +12,8 @@ The data can be downloaded [here](https://d396qusza40orc.cloudfront.net/repdata%
 2. Unzip the zip file.
 3. Read the data
 
-```{r echo=TRUE, results='hide'}
+
+```r
 if (!file.exists("activity.zip")) {
   download.file("https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip", destfile = "activity.zip");
 }
@@ -33,45 +29,68 @@ if (!exists("activity")) {
 
 Sum the number of steps taken in each measurement, grouped by date:
 
-```{r echo=TRUE}
+
+```r
 stepsbydate <- aggregate(steps ~ date, activity, FUN = sum);
 ```
 
 A histogram of the total number of steps taken each day:
 
-```{r echo=TRUE}
+
+```r
 hist(stepsbydate$steps, main = "Total Number of Steps Taken Per Day", xlab = "Steps");
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)
+
 The mean total number of steps taken per day is 
-```{r echo=TRUE}
+
+```r
 mean(stepsbydate$steps);
 ```
+
+```
+## [1] 10766.19
+```
  and the median total number of steps taken per day is 
-```{r echo=TRUE}
+
+```r
 median(stepsbydate$steps);
+```
+
+```
+## [1] 10765
 ```
 
 ## What is the average daily activity pattern?
 
 Find the average number of steps, grouped by interval:
 
-```{r echo=TRUE}
+
+```r
 stepsbyint <- aggregate(steps ~ interval, activity, FUN = mean);
 plot(stepsbyint, type='l', main = "Average Daily Activity Pattern");
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-6-1.png)
 
 ## Imputing missing values
 
 Number of NA values:
 
-```{r echo=TRUE}
+
+```r
 sum(is.na(activity$steps));
+```
+
+```
+## [1] 2304
 ```
 
 Use the average number of steps in the given interval for NA values:
 
-```{r echo=TRUE}
+
+```r
 newactivity <- activity;
 for (i in 1:length(newactivity$steps)) {
   if (is.na(newactivity[i, 1])) {
@@ -82,52 +101,72 @@ for (i in 1:length(newactivity$steps)) {
 
 Sum the number of steps taken in each measurement, grouped by date:
 
-```{r echo=TRUE}
+
+```r
 newstepsbydate <- aggregate(steps ~ date, newactivity, FUN = sum);
 ```
 
 A histogram of the total number of steps taken each day:
 
-```{r echo=TRUE}
+
+```r
 hist(newstepsbydate$steps, main = "Total Number of Steps Taken Per Day", xlab = "Steps");
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-10-1.png)
+
 The mean total number of steps taken per day is 
-```{r echo=TRUE}
+
+```r
 mean(newstepsbydate$steps);
 ```
+
+```
+## [1] 10766.19
+```
  and the median total number of steps taken per day is 
-```{r echo=TRUE}
+
+```r
 median(newstepsbydate$steps);
+```
+
+```
+## [1] 10766.19
 ```
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
 First, a homemade function to determine whether a day is a weekday or not:
 
-```{r echo=TRUE}
+
+```r
 library(lubridate);
 isWeekday <- function(x) { return (wday(x) != 1 & wday(x) != 7); }
 ```
 
 Add a column to the data frame showing if it is the weekday or weekend:
 
-```{r echo=TRUE}
+
+```r
 newactivity$day <- factor(isWeekday(ymd(newactivity$date)), labels = c("weekend", "weekday"));
 ```
 
 Find the average number of steps taken per interval, split by weekdays and weekends:
 
-```{r echo=TRUE}
+
+```r
 newstepsbyint <- aggregate(steps ~ (interval + day), newactivity, FUN = mean);
 ```
 
 A line chart, plotted with the lattice package:
 
-```{r echo=TRUE}
+
+```r
 library(lattice);
 xyplot(steps ~ interval|day, data = newstepsbyint, type = 'l', layout = c(1, 2), main = "Average Daily Activity Pattern");
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-16-1.png)
 
 ----------
 
